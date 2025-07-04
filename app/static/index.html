@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing App</title>
+    <link rel="stylesheet" href="/static/css/themes.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="light-theme bg-app-primary text-app-primary">
+    <div class="container py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-4">Image Processing App</h1>
+            <p class="text-lg text-app-secondary">Upload an image and apply various processing operations</p>
+        </header>
+
+        <main class="main-layout">
+            <!-- Left Column: Operations -->
+            <div class="operations-column">
+                <!-- Operations Section -->
+                <div class="operations-section">
+                    <h2 class="text-2xl font-bold mb-4">Available Operations</h2>
+                    <div class="operations-header">
+                        <div class="operations-search">
+                            <input type="text" class="search-input" placeholder="Search operations..." id="operations-search">
+                </div>
+                    </div>
+                    <div class="operations-categories list-view" id="operations-container">
+                        <!-- Debug info will be shown here if empty -->
+                        <div id="debug-info" style="padding: 1rem; color: var(--text-secondary);">
+                            Loading operations...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Upload, Pipeline, and Previews -->
+            <div class="content-column">
+                <!-- Upload Section -->
+                <div class="upload-section">
+                    <button id="upload-btn" class="btn btn-primary">
+                        <span class="btn-icon">📁</span>
+                        <span class="btn-text">Upload Image</span>
+                    </button>
+                    <button id="apply-pipeline-btn" class="btn btn-primary">
+                        <span class="btn-icon">⚡</span>
+                        Apply Pipeline
+                    </button>
+                    <button id="live-processing-btn" class="btn-toggle" data-active="false">
+                        <span class="btn-icon">
+                            <svg class="sync-icon" viewBox="0 0 24 24" width="20" height="20">
+                                <circle class="sync-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path class="sync-arrow" d="M12 7v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        <span class="btn-text">Live Processing</span>
+                        <span class="toggle-indicator"></span>
+                    </button>
+                    <input type="file" id="file-input" accept="image/*" class="hidden">
+                </div>
+
+                <!-- Pipeline Section -->
+                <div class="pipeline-section">
+                    <!-- Pipeline Header Box -->
+                    <div class="pipeline-header">
+                        <h2>Processing Pipeline</h2>
+                        <div class="pipeline-stats">
+                            <span id="steps-count">0 steps</span>
+                            <span class="separator">•</span>
+                            <span id="processing-time">0ms</span>
+                            <span class="separator">•</span>
+                            <button id="reset-pipeline-btn" class="btn btn-small">
+                                <span class="btn-icon">🔄</span>
+                                Reset
+                        </button>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Steps Container -->
+                    <div class="pipeline-steps-container">
+                        <div id="pipeline-steps" class="pipeline-container">
+                            <div class="empty-pipeline-message">
+                                <div class="message-icon">🔍</div>
+                                <h3>No Steps Added</h3>
+                                <p>Select operations from the left panel to build your pipeline</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-section">
+                    <div class="preview-header">
+                        <h2 class="text-2xl font-bold">Image Previews</h2>
+                        <!-- Preview Controls -->
+                        <div class="preview-controls">
+                            <button id="toggle-previews" class="btn btn-small">
+                                <span class="btn-icon">👁️</span>
+                                <span class="btn-text">Hide Previews</span>
+                            </button>
+                            <button id="compare-btn" class="btn btn-small" disabled>
+                                <span class="btn-icon">⇄</span>
+                                <span class="btn-text">Compare</span>
+                            </button>
+            </div>
+                    </div>
+                    
+                    <!-- Preview Container -->
+                    <div id="preview-container" class="preview-container">
+                        <!-- Normal Preview Mode -->
+                        <div id="normal-preview-mode" class="preview-mode">
+                            <div class="preview-box">
+                                <div class="preview-header">
+                                    <h3>Original Image</h3>
+                                    <div class="preview-header-actions">
+                                        <button class="btn btn-small" onclick="pipeline.resetImage()" title="Reset image">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="preview-content">
+                                    <div class="preview-placeholder">
+                                        <div class="placeholder-icon">📷</div>
+                                        <div class="placeholder-text">Original Image</div>
+                                    </div>
+                                    <img id="original-preview" class="preview-image" alt="Original image preview">
+                                </div>
+                            </div>
+                            <div class="preview-box">
+                                <div class="preview-header">
+                                    <h3>Processed Image</h3>
+                                    <div class="preview-header-actions">
+                                        <button id="download-btn-normal" class="btn btn-small" onclick="pipeline.downloadResult(event)" disabled>
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="preview-content">
+                                    <div class="preview-placeholder">
+                                        <div class="placeholder-icon">✨</div>
+                                        <div class="placeholder-text">Processed Image</div>
+                                    </div>
+                                    <img id="processed-preview" class="preview-image" alt="Processed image preview">
+                                </div>
+                    </div>
+                </div>
+
+                        <!-- Compare Preview Mode -->
+                        <div id="compare-preview-mode" class="preview-mode compare-mode hidden">
+                            <div class="preview-box">
+                                <div class="preview-header">
+                                    <h3>Image Comparison</h3>
+                                    <div class="preview-header-actions">
+                                        <button id="download-btn-compare" class="btn btn-small" onclick="pipeline.downloadResult(event)" disabled>
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="compare-container">
+                                    <div class="compare-image original">
+                                        <img id="compare-original" class="preview-image" alt="Original image">
+                                    </div>
+                                    <div class="compare-image processed">
+                                        <img id="compare-processed" class="preview-image" alt="Processed image">
+                                    </div>
+                                    <div class="compare-slider">
+                                        <div class="slider-handle">
+                                            <div class="slider-button">
+                                                <span class="slider-icon">⇄</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Add global error handler
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + JSON.stringify(error));
+            return false;
+        };
+    </script>
+    <script src="/static/js/theme.js"></script>
+    <script src="/static/js/pipeline.js"></script>
+    <script src="/static/js/ui.js"></script>
+</body>
+</html> 

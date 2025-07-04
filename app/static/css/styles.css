@@ -1,0 +1,48 @@
+#processing-stats {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#processing-stats .total-time {
+    font-size: 1.1em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#processing-stats .step-times h4 {
+    color: #495057;
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+#processing-stats .step-times ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#processing-stats .step-times li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#processing-stats .step-times li:last-child {
+    border-bottom: none;
+}
+
+#processing-stats .operation-name {
+    color: #6c757d;
+    font-family: monospace;
+}
+
+#processing-stats .operation-time {
+    color: #28a745;
+    font-weight: bold;
+} 

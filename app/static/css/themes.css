@@ -1,0 +1,195 @@
+/* Theme Variables */
+:root {
+    /* Light Theme Defaults */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --border-color: #e5e7eb;
+    --accent-color: #8b5cf6;
+    --accent-hover: #9f75ff;
+    --error-color: #ef4444;
+    --success-color: #10b981;
+    --success-hover: #059669;
+    --danger-color: #ef4444;
+    --danger-hover: #dc2626;
+}
+
+/* Dark Theme Colors */
+.dark-theme {
+    --bg-primary: #0a0a0c;
+    --bg-secondary: #13131a;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --border-color: #27272a;
+    --accent-color: #8b5cf6;
+    --accent-hover: #9f75ff;
+}
+
+/* Theme Transitions */
+* {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Dark Theme Component Overrides */
+.dark-theme {
+    /* Cards and Containers */
+    .operation-card,
+    .pipeline-step,
+    .search-input,
+    .select-input,
+    .no-results {
+        background-color: var(--bg-secondary);
+        border-color: var(--border-color);
+    }
+
+    /* Interactive Elements */
+    .operation-card:hover,
+    .category-header:hover,
+    .subcategory-header:hover,
+    .step-header {
+        background-color: #1f1f2e;
+    }
+
+    /* Accent Elements */
+    .pipeline-step:hover,
+    .operation-card.search-match {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+    }
+
+    /* Form Controls */
+    .param-slider {
+        background-color: var(--border-color);
+        
+        &::-webkit-slider-thumb {
+            background-color: var(--accent-color);
+            
+            &:hover {
+                background-color: var(--accent-hover);
+            }
+        }
+    }
+
+    /* Input Focus States */
+    .search-input:focus,
+    .select-input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+    }
+
+    /* Accent UI Elements */
+    .step-number,
+    .btn-primary {
+        background-color: var(--accent-color);
+    }
+
+    .preview-toggle.active {
+        color: var(--accent-color);
+    }
+
+    /* Loading States */
+    .loading-spinner::after {
+        border-top-color: var(--accent-color);
+    }
+
+    /* Notifications */
+    .notification.success {
+        background-color: #1f1f2e;
+        border: 1px solid var(--accent-color);
+    }
+}
+
+/* Base Styles */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.bg-app-primary {
+    background-color: var(--bg-primary);
+}
+
+.bg-app-secondary {
+    background-color: var(--bg-secondary);
+}
+
+.text-app-primary {
+    color: var(--text-primary);
+}
+
+.text-app-secondary {
+    color: var(--text-secondary);
+}
+
+.border-app {
+    border-color: var(--border-color);
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: var(--success-hover);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-hover);
+}
+
+/* Card Styles */
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+/* Input Styles */
+.input {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* Slider Styles */
+.slider {
+    background-color: var(--border-color);
+}
+
+.slider::-webkit-slider-thumb {
+    background-color: var(--accent-color);
+}
+
+.slider::-webkit-slider-thumb:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Transition */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+} 
